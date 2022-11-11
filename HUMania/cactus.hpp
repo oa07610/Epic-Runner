@@ -1,7 +1,8 @@
 #include<SDL.h>
 #include "drawing.hpp"
-class cactus{
-    friend class HUMania;
+#include "Unit.hpp"
+class cactus : public Unit{
+    friend class RunningMan;
     SDL_Rect srcRect, moverRect;
     public:
     int count = 0 ;

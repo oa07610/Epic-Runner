@@ -1,5 +1,5 @@
 #include "game.hpp"
-#include "HUMania.hpp"
+#include "RunningMan.hpp"
 #include "drawing.hpp"
 
 SDL_Renderer* Drawing::gRenderer = NULL;
@@ -75,7 +75,7 @@ bool Game::loadMedia()
 	Drawing::cactus = loadTexture("cactus.png");
 	Drawing::life = loadTexture("life.png");
 	Drawing::weapon = loadTexture("weapon.png");
-    gTexture = loadTexture("hu.png");
+    gTexture = loadTexture("bg.png");
 	if(Drawing::assets==NULL || Drawing::tt==NULL || Drawing::life==NULL|| Drawing::weapon==NULL|| Drawing::cactus==NULL  || gTexture==NULL)
     {
         printf("Unable to run due to error: %s\n",SDL_GetError());
@@ -140,7 +140,7 @@ void Game::run( )
 	bool quit = false;
 	SDL_Event e;
 
-	HUMania humania;
+	RunningMan runningman;
 
 	while( !quit )
 	{
@@ -157,20 +157,20 @@ void Game::run( )
 			//this is a good location to add pigeon in linked list.
 				int xMouse, yMouse;
 				SDL_GetMouseState(&xMouse,&yMouse);
-				humania.createObject(xMouse, yMouse);
+				runningman.createObject(xMouse, yMouse);
 			}
 			const Uint8* state = SDL_GetKeyboardState(NULL);
 			if (state[SDL_SCANCODE_UP]) { 
-				humania.checks = true;
+				runningman.checks = true;
 			}
 			if (state[SDL_SCANCODE_RIGHT]) { 
-				humania.right = true;
+				runningman.right = true;
 			}
 			if (state[SDL_SCANCODE_DOWN]) { 
-				humania.weapon_check = true;
+				runningman.weapon_check = true;
 			}
 			if (state[SDL_SCANCODE_LEFT]) { 
-				humania.left = true;
+				runningman.left = true;
 			}
 		}
 
@@ -178,8 +178,8 @@ void Game::run( )
 		SDL_RenderCopy(Drawing::gRenderer, gTexture, NULL, NULL);//Draws background to renderer
 		//***********************draw the objects here********************
 
-		humania.drawObjects();
-		humania.createObj();
+		runningman.drawObjects();
+		runningman.createObj();
 
 		//****************************************************************
     	SDL_RenderPresent(Drawing::gRenderer); //displays the updated renderer

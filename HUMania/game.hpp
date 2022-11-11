@@ -20,9 +20,6 @@ class Game{
     
 
 public:
-
-
-
     bool init();
     bool loadMedia();
     void close();
