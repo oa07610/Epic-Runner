@@ -18,7 +18,7 @@ coins_a::coins_a(){
 
 
 void coins_a::draw(){
-    SDL_RenderCopy(Drawing::gRenderer, Drawing::coin, &srcRect, &moverRect);  //makes the object
+    SDL_RenderCopy(Drawing::gRenderer, Drawing::tt, &srcRect, &moverRect);  //makes the object
 }
 
 void coins_a::move(){

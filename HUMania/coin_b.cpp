@@ -14,7 +14,7 @@ coins_b::coins_b(){
 void coins_b::draw(){
     moverRect = {20, 130, 50, 50};
 	for(int i=0 ; i<counts ; i++){
-		SDL_RenderCopy(Drawing::gRenderer, Drawing::coin, &srcRect, &moverRect);  
+		SDL_RenderCopy(Drawing::gRenderer, Drawing::tt, &srcRect, &moverRect);  
 		moverRect.x+=40;		
 	}
 }
