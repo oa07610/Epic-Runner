@@ -5,6 +5,7 @@
 #include "coins_a.hpp"
 #include "weapon.hpp"
 #include "coins_b.hpp"
+#include "animal.hpp"
 #include<vector>
 #include<list>
 using namespace std;
@@ -17,11 +18,13 @@ class RunningMan{
     lives liv;
     coins_b cin;
     weapon knife;
+    animal beast;
     vector<Man*> man;
     vector<weapon*> weapons;
     vector<coins_a*> coins_as;
     vector<cactus*> cactuses;
     vector<lives*> living;
+    vector<animal*> beasts;
     vector<coins_b*> coins;
 
     public:

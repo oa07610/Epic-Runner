@@ -8,6 +8,8 @@ SDL_Texture* Drawing::tt = NULL;
 SDL_Texture* Drawing::cactus = NULL;
 SDL_Texture* Drawing::life = NULL;
 SDL_Texture* Drawing::weapon = NULL;
+SDL_Texture* Drawing::animal = NULL;
+SDL_Texture* Drawing::ghost = NULL;
 
 bool Game::init()
 {
@@ -75,8 +77,10 @@ bool Game::loadMedia()
 	Drawing::cactus = loadTexture("cactus.png");
 	Drawing::life = loadTexture("life.png");
 	Drawing::weapon = loadTexture("weapon.png");
+	Drawing::animal = loadTexture("animal.png");
+	Drawing::ghost = loadTexture("ghost.png");
     gTexture = loadTexture("bg.png");
-	if(Drawing::assets==NULL || Drawing::tt==NULL || Drawing::life==NULL|| Drawing::weapon==NULL|| Drawing::cactus==NULL  || gTexture==NULL)
+	if(Drawing::assets==NULL || Drawing::tt==NULL || Drawing::life==NULL|| Drawing::weapon==NULL|| Drawing::cactus==NULL || Drawing::animal==NULL || Drawing::ghost==NULL || gTexture==NULL)
     {
         printf("Unable to run due to error: %s\n",SDL_GetError());
         success =false;
@@ -97,6 +101,10 @@ void Game::close()
 	Drawing::cactus=NULL;
 	SDL_DestroyTexture(Drawing::life);
 	Drawing::life=NULL;
+	SDL_DestroyTexture(Drawing::animal);
+	Drawing::animal=NULL;
+	SDL_DestroyTexture(Drawing::ghost);
+	Drawing::ghost=NULL;
 	SDL_DestroyTexture(gTexture);
 	
 	//Destroy window
@@ -184,7 +192,7 @@ void Game::run( )
 		//****************************************************************
     	SDL_RenderPresent(Drawing::gRenderer); //displays the updated renderer
 
-	    SDL_Delay(100);	//causes sdl engine to delay for specified miliseconds
+	    SDL_Delay(60);	//causes sdl engine to delay for specified miliseconds
 	}
 			
 }

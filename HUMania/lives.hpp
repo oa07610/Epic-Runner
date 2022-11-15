@@ -1,7 +1,7 @@
 #include<SDL.h>
 #include "drawing.hpp"
 #include "Unit.hpp"
-class lives: public Unit{
+class lives{
     SDL_Rect srcRect, moverRect;
     friend class RunningMan;
 public:

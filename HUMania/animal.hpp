@@ -1,11 +1,14 @@
 #include<SDL.h>
 #include "drawing.hpp"
 #include "Unit.hpp"
-class coins_b{
+class animal : public Unit{
     friend class RunningMan;
     SDL_Rect srcRect, moverRect;
     public:
-    int counts = 0 ;
+    int count = 0 ;
+    int frame = 0 ;
     void draw();
-    coins_b();
+    void move();
+    animal();
+    animal(int, int);
 };

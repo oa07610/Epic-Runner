@@ -42,23 +42,13 @@ void RunningMan::drawObjects()
         w++;
         }
 
-    int t = 0; 
-    // while (t < weapons.size()){        //iterating over the vector to make the object         
-    //     weapons[t]->draw();
-    //     cout << t << endl;
-    //     if (weapons[t]-> moverRect.x > 1000 || w_check ==true){
-    //     weapons.erase(weapons.begin()+t);
-    //     w_check = false;}
-    //     t++;
-    //     }
+    int t = 0;
 
 
     // t = 0; 
     while (t < cactuses.size()){        //iterating over the vector to make the object 
         int x_values = (man[1]->moverRect.x - cactuses[t]-> moverRect.x);
         int y_values = (man[1]->moverRect.y - cactuses[t]-> moverRect.y);
-        // int w_x_values = (weapons[0]->moverRect.x - cactuses[t]-> moverRect.x);
-        // int w_y_values = (weapons[0]->moverRect.y - cactuses[t]-> moverRect.y);
         if (t>0){
         cactuses[t]->draw();
         cactuses[t]->move();
@@ -66,9 +56,20 @@ void RunningMan::drawObjects()
         if ( (cactuses[t]->count == 3) || ( (x_values < 10 && x_values > -10) && (y_values < 10 && y_values > -10) )){
         cactuses.erase(cactuses.begin()+t);
         life_check = true;}
-        // else if (w_x_values < 5){
-        // cactuses.erase(cactuses.begin()+t);
-        // w_check = true;}
+        t++;
+        }
+    t = 0;
+
+    while (t < beasts.size()){        //iterating over the vector to make the object 
+        int x_values = (man[1]->moverRect.x - beasts[t]-> moverRect.x);
+        int y_values = (man[1]->moverRect.y - beasts[t]-> moverRect.y);
+        if (t>0){
+        beasts[t]->draw();
+        beasts[t]->move();
+        }
+        if ( (beasts[t]->count == 3) || ( (x_values < 10 && x_values > -10) && (y_values < 10 && y_values > -10) )){
+        beasts.erase(beasts.begin()+t);
+        life_check = true;}
         t++;
         }
 
@@ -116,7 +117,7 @@ void RunningMan::createObj()
     tick ++;
     if (tick >25){
 
-    int number = (rand() % 2); 
+    int number = (rand() % 3); 
      if (number == 0)
         {
             coins_a *app1 = new coins_a(30,500);
@@ -126,6 +127,11 @@ void RunningMan::createObj()
         {
             cactus *cac = new cactus(30,500);
             cactuses.push_back(cac);
+        }
+        else if (number ==  2)
+        {
+            animal *beast = new animal(30,500);
+            beasts.push_back(beast);
         }
     tick = 0;}
     // if ((weapon_check ==true) && (weapons.size()<1)){

@@ -11,4 +11,6 @@ class Drawing{
     static SDL_Texture* cactus;
     static SDL_Texture* life;
     static SDL_Texture* weapon;
+    static SDL_Texture* ghost;
+    static SDL_Texture* animal;
 };
