@@ -24,6 +24,9 @@
         "system_error": "cpp",
         "type_traits": "cpp",
         "typeinfo": "cpp",
-        "algorithm": "cpp"
+        "algorithm": "cpp",
+        "optional": "cpp",
+        "fstream": "cpp",
+        "sstream": "cpp"
     }
 }

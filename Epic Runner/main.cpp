@@ -7,7 +7,7 @@ int main(int argc, char *argv[]){
 		printf( "Failed to initialize!\n" );
         return 0;
 	}
-		//Load media
+		//Load splash screen
     if( !game.loadMedia() ){
         printf( "Failed to load media!\n" );
         return 0;

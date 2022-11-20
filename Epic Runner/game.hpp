@@ -22,6 +22,7 @@ class Game{
 public:
     bool init();
     bool loadMedia();
+    bool loadIns();
     bool loadGrid();
     void close();
     SDL_Texture* loadTexture( std::string path );

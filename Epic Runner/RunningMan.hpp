@@ -6,6 +6,7 @@
 #include "weapon.hpp"
 #include "coins_b.hpp"
 #include "animal.hpp"
+#include "ghost.hpp"
 #include<vector>
 #include<list>
 using namespace std;
@@ -19,6 +20,7 @@ class RunningMan{
     coins_b cin;
     weapon knife;
     animal beast;
+    ghost boo;
     vector<Man*> man;
     vector<weapon*> weapons;
     vector<coins_a*> coins_as;
@@ -26,6 +28,7 @@ class RunningMan{
     vector<lives*> living;
     vector<animal*> beasts;
     vector<coins_b*> coins;
+    vector<ghost*> ghosts;
 
     public:
     bool coin_check = false;

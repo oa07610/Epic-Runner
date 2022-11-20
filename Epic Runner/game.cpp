@@ -32,7 +32,7 @@ bool Game::init()
 		}
 
 		//Create window
-		gWindow = SDL_CreateWindow( "HU Mania", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
+		gWindow = SDL_CreateWindow( "Epic Runner", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
 		if( gWindow == NULL )
 		{
 			printf( "Window could not be created! SDL Error: %s\n", SDL_GetError() );
@@ -93,6 +93,19 @@ bool Game::loadMedia()
 	//Loading success flag
 	bool success = true;
     gTexture = loadTexture("menu.png");
+	if(gTexture==NULL)
+    {
+        printf("Unable to run due to error: %s\n",SDL_GetError());
+        success =false;
+    }
+	return success;
+}
+
+bool Game::loadIns()
+{
+	//Loading success flag
+	bool success = true;
+    gTexture = loadTexture("instructions.png");
 	if(gTexture==NULL)
     {
         printf("Unable to run due to error: %s\n",SDL_GetError());
@@ -180,10 +193,22 @@ void Game::run( )
 			//this is a good location to add pigeon in linked list.
 				int xMouse, yMouse;
 				SDL_GetMouseState(&xMouse,&yMouse);
-				if (state == 0){
-					state = 1;
-					loadGrid();}
-				else if (state ==1){runningman.createObject(xMouse, yMouse);}
+				if (state == 0 and xMouse>=415 and xMouse<= 575 and yMouse>=245 and yMouse<=295){
+					state = 2;
+					loadGrid();
+				}
+				else if(state == 0 and xMouse>=360 and xMouse<= 630 and yMouse>=370 and yMouse<=425){
+					state =1;
+					loadIns();
+				}
+				else if(state == 1 and xMouse>=40 and xMouse<= 145 and yMouse>=35 and yMouse<=85){
+					state = 0;
+					loadMedia();
+				}
+				else if (state ==2)
+				{
+					runningman.createObject(xMouse, yMouse);
+				}
 			}
 			const Uint8* state = SDL_GetKeyboardState(NULL);
 			if (state[SDL_SCANCODE_UP]) { 
@@ -203,9 +228,9 @@ void Game::run( )
 		SDL_RenderClear(Drawing::gRenderer); //removes everything from renderer
 		SDL_RenderCopy(Drawing::gRenderer, gTexture, NULL, NULL);//Draws background to renderer
 		//***********************draw the objects here********************
-		if (state ==1){
+		if (state ==2){
 		runningman.drawObjects();}
-		if (state ==1 && runningman.screen ==true){
+		if (state ==2 && runningman.screen ==true){
 		runningman.createObj();}
 
 		//****************************************************************

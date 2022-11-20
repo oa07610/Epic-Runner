@@ -72,6 +72,21 @@ void RunningMan::drawObjects()
         t++;
         }
 
+    t = 0;
+
+    while (t < ghosts.size()){        //iterating over the vector to make the object 
+        int x_values = (man[1]->moverRect.x - ghosts[t]-> moverRect.x);
+        int y_values = (man[1]->moverRect.y - ghosts[t]-> moverRect.y);
+        if (t>0){
+        ghosts[t]->draw();
+        ghosts[t]->move();
+        }
+        if ( (ghosts[t]->count == 3) || ( (x_values < 10 && x_values > -10) && (y_values < 10 && y_values > -10) )){
+        ghosts.erase(ghosts.begin()+t);
+        life_check = true;}
+        t++;
+        }
+
     t = 0; 
     while (t < living.size()){        //iterating over the vector to make the object 
         living[t]->draw();
@@ -113,7 +128,7 @@ void RunningMan::createObj()
     tick ++;
     if (tick >25){
     cout << "created"<<endl;
-    int number = (rand() % 3); 
+    int number = (rand() % 4); 
      if (number == 0)
         {
             coins_a *app1 = new coins_a(30,500);
@@ -128,6 +143,11 @@ void RunningMan::createObj()
         {
             animal *beast = new animal(30,500);
             beasts.push_back(beast);
+        }
+        else if (number ==  3)
+        {
+            ghost *boo = new ghost(30,500);
+            ghosts.push_back(boo);
         }
     tick = 0;}
 
