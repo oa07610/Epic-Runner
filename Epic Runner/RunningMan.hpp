@@ -32,6 +32,7 @@ class RunningMan{
     bool weapon_check = false;
     bool w_check = false;
     int tick = 0 ;
+    bool screen = false; 
     bool life_check = false;
     bool checks = false ;
     bool left = false ;

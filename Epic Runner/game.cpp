@@ -67,7 +67,7 @@ bool Game::init()
 	return success;
 }
 
-bool Game::loadMedia()
+bool Game::loadGrid()
 {
 	//Loading success flag
 	bool success = true;
@@ -87,6 +87,20 @@ bool Game::loadMedia()
     }
 	return success;
 }
+
+bool Game::loadMedia()
+{
+	//Loading success flag
+	bool success = true;
+    gTexture = loadTexture("menu.png");
+	if(gTexture==NULL)
+    {
+        printf("Unable to run due to error: %s\n",SDL_GetError());
+        success =false;
+    }
+	return success;
+}
+
 
 void Game::close()
 {
@@ -159,13 +173,17 @@ void Game::run( )
 			if( e.type == SDL_QUIT )
 			{
 				quit = true;
+				cout<<quit;
 			}
 
 			if(e.type == SDL_MOUSEBUTTONDOWN){
 			//this is a good location to add pigeon in linked list.
 				int xMouse, yMouse;
 				SDL_GetMouseState(&xMouse,&yMouse);
-				runningman.createObject(xMouse, yMouse);
+				if (state == 0){
+					state = 1;
+					loadGrid();}
+				else if (state ==1){runningman.createObject(xMouse, yMouse);}
 			}
 			const Uint8* state = SDL_GetKeyboardState(NULL);
 			if (state[SDL_SCANCODE_UP]) { 
@@ -185,9 +203,10 @@ void Game::run( )
 		SDL_RenderClear(Drawing::gRenderer); //removes everything from renderer
 		SDL_RenderCopy(Drawing::gRenderer, gTexture, NULL, NULL);//Draws background to renderer
 		//***********************draw the objects here********************
-
-		runningman.drawObjects();
-		runningman.createObj();
+		if (state ==1){
+		runningman.drawObjects();}
+		if (state ==1 && runningman.screen ==true){
+		runningman.createObj();}
 
 		//****************************************************************
     	SDL_RenderPresent(Drawing::gRenderer); //displays the updated renderer

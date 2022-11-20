@@ -8,6 +8,7 @@ void RunningMan::drawObjects()
     int k = 0; 
     while (k < man.size()){        //iterating over the vector to make the object 
         if (k==1){
+        screen = true;
         man[k]->draw();             // calling the draw function
         if (left==true){
             if ( (man[k] ->moverRect.x - 130) < 0 )
@@ -44,8 +45,6 @@ void RunningMan::drawObjects()
 
     int t = 0;
 
-
-    // t = 0; 
     while (t < cactuses.size()){        //iterating over the vector to make the object 
         int x_values = (man[1]->moverRect.x - cactuses[t]-> moverRect.x);
         int y_values = (man[1]->moverRect.y - cactuses[t]-> moverRect.y);
@@ -100,9 +99,6 @@ void RunningMan::createObject(int x, int y)
     Man *man1 = new Man(x,y);
     man.push_back(man1);}
 
-    // weapon *knife = new weapon(man[1]->moverRect.x,man[1]->moverRect.y);
-    // weapons.push_back(knife); 
-
     if (living.size()<1){
     lives *liv = new lives();
     living.push_back(liv);}
@@ -116,7 +112,7 @@ void RunningMan::createObj()
 {
     tick ++;
     if (tick >25){
-
+    cout << "created"<<endl;
     int number = (rand() % 3); 
      if (number == 0)
         {
@@ -134,10 +130,5 @@ void RunningMan::createObj()
             beasts.push_back(beast);
         }
     tick = 0;}
-    // if ((weapon_check ==true) && (weapons.size()<1)){
-    // weapon *knife = new weapon(man[1]->moverRect.x,man[1]->moverRect.y);
-    // weapons.push_back(knife); 
-    // }
-    // weapon_check = false;
 
 }
