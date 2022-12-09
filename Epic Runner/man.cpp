@@ -2,29 +2,23 @@
 #include <iostream>
 //Man implementation will go here.
 
-Man::Man(int x, int y){
-    // src coorinates from assets.png file, they have been found using spritecow.com
-    srcRect = {63, 619, 151, 166};
-    i = 0 ;
-     // setting pigeon x and y values
-    moverRect = {30,500, 50, 50};
-}
-
 Man::Man(){
-    // src coorinates from assets.png file, they have been found using spritecow.com
+    // src coorinates found using spritecow.com
     srcRect = {63, 619, 151, 166};
     i = 0 ;
-     // setting pigeon x and y values
+     // setting the values
     moverRect = {30,500, 50, 50};
 }
 
 
 void Man::draw(){
-    SDL_RenderCopy(Drawing::gRenderer, Drawing::assets, &srcRect, &moverRect);  //makes the object
+    SDL_RenderCopy(Drawing::gRenderer, Drawing::assets, &srcRect, &moverRect);  //draws the object
 }
 
 
-void Man::jump(){
+void Man::jump(){      //this function is for the jump 
+    //there is a change in the animations 
+    //there is movement in the Y direction as well
 
     if (frame == 0){srcRect = {0,218,85,154};}
     else if (frame==1){srcRect = {103,190,86,154};}
@@ -33,22 +27,21 @@ void Man::jump(){
     else if (frame==4){srcRect = {391,215,88,150} ;}
     
     frame++; 
-    if (moverRect.x >= 950){
+    if (moverRect.x >= 950){     //restricting the man to the size of the screen 
         moverRect.x = 950;}
 
-    moverRect.x += 20;
+    moverRect.x += 20;     //for movement in right direction
 
-    if (frame <3){
+    if (frame <3){              //to bring the player down
     moverRect.y -= 90;}
     else
     {moverRect.y += 60;}
     if (frame==5){frame=0; check =false;}   //making the i again 0 -> making the srcRect again
 }
-    
 
-
-
-void Man::fly(){
+void Man::moving(){
+    //this function is called only for the horizontal movement 
+    //the change in 'i' here is for the animation
 
     if (i == 0){srcRect = {207,2,95,141};}
     else if (i==1){srcRect = {326, 2, 80, 141};}
@@ -58,10 +51,8 @@ void Man::fly(){
     else if (i==5){srcRect = {95,0,84,143};}
     i++;  
 
-    if (i==6){i = 0;}   //making the i again 0 -> making the srcRect again
-    //moverRect.x += 6;
+    if (i==6){i = 0;} 
+}
 
-    // if (moverRect.x >= 950){
-    //     moverRect.x = 950;
-    // }
+Man :: ~Man(){     //destructor made to remove the instance
 }

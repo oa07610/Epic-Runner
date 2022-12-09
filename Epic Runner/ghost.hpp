@@ -2,13 +2,12 @@
 #include "drawing.hpp"
 #include "Unit.hpp"
 class ghost : public Unit{
-    friend class RunningMan;
-    SDL_Rect srcRect, moverRect;
+    friend class RunningMan;               //made friend class so that private data can be used
+    //SDL_Rect srcRect, moverRect;
     public:
-    int count = 0 ;
-    int frame = 0 ;
-    void draw();
-    void move();
-    ghost();
-    ghost(int, int);
+    int frame = 0 ;       //for animation
+    void draw();        //declaration of draw 
+    void move();        //declaration of move
+    ghost();           //default constructor
+    ~ghost();          //deconstructor called
 };

@@ -1,15 +1,17 @@
+#pragma once
 #include <SDL.h>
 #include "drawing.hpp"
+#include "man.hpp"
 #include <iostream>
 using namespace std;
-#pragma once
 
-class Unit{             //defining a class named unit as required that is to be inherited by bee, pigeon, and butterfly.
+class Unit{             //defining a class named unit that will be inherited by ghost, meteor, cactus and animal class
     protected:
-        SDL_Rect srcRect, moverRect;            //These values will be inherited by bee, pigeon, and butterfly. This would contain initial srcRect, moverRect values.
-        int animation = 0;                  //An animation variable that will be inherited by bee, pigeon, and butterfly to animate objects.
+        SDL_Rect srcRect, moverRect;            //These values will be inherited by the child classes. This would contain initial srcRect, moverRect values.
     public:
-        virtual void draw();                           //A predefined draw function that will be inherited by bee, pigeon, and butterfly to draw objects.
-        virtual void move();     //A virtual fly function since each object have different srcRect values for animation, this function cannot be predefined but would be defined individually in each class.
-        friend class RunningMan;
+        //virtual int count;
+        virtual void draw() = 0;       //A pure virtual draw function as it is unique to each class
+        virtual void move() = 0;     //A virtual move function as it is unique to each class
+        friend class RunningMan;        
+        virtual ~Unit();            //virtual destructor called 
 };

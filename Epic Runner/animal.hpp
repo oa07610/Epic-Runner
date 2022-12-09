@@ -2,13 +2,11 @@
 #include "drawing.hpp"
 #include "Unit.hpp"
 class animal : public Unit{
-    friend class RunningMan;
-    SDL_Rect srcRect, moverRect;
+    friend class RunningMan;               //made friend class so that private data can be used
     public:
-    int count = 0 ;
-    int frame = 0 ;
-    void draw();
-    void move();
-    animal();
-    animal(int, int);
+    int frame = 0 ;    //for animation
+    void draw();        //declaration of draw 
+    void move();        //declaration of move
+    animal();           //default constructor
+    ~animal();          //deconstructor called
 };

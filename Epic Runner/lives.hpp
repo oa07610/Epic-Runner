@@ -3,10 +3,11 @@
 #include "Unit.hpp"
 class lives{
     SDL_Rect srcRect, moverRect;
-    friend class RunningMan;
+    friend class RunningMan;               //made friend class so that private data can be used
 public:
-    void draw();
-    lives();
-    bool check;
-    int l_left = 10;
+    void draw();          //draw declared here
+    lives();                //default construcot
+    void operator--();         //operator overloading
+    int l_left = 10;            //the amount of inintial light
+    ~lives();
 };

@@ -1,21 +1,30 @@
 #include "game.hpp"
 #include "RunningMan.hpp"
 #include "drawing.hpp"
+#include "screenInfo.hpp"
+
+//done to include a particular image in the game
 
 SDL_Renderer* Drawing::gRenderer = NULL;
 SDL_Texture* Drawing::assets = NULL;
 SDL_Texture* Drawing::tt = NULL;
 SDL_Texture* Drawing::cactus = NULL;
 SDL_Texture* Drawing::life = NULL;
-SDL_Texture* Drawing::weapon = NULL;
 SDL_Texture* Drawing::animal = NULL;
 SDL_Texture* Drawing::ghost = NULL;
+SDL_Texture* Drawing::meteor = NULL;
+SDL_Texture* Drawing::exp = NULL;
+
+//Initialize pointer to zero so that it can be initialized in first call to getInstance
+screenInfo *screenInfo::instance = 0;
+
+//Getting the instance of SINGLETON Design Pattern
+screenInfo* screen = screen->getInstance();
 
 bool Game::init()
 {
 	//Initialization flag
 	bool success = true;
-
 
 	//Initialize SDL
 	if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
@@ -31,8 +40,14 @@ bool Game::init()
 			printf( "Warning: Linear texture filtering not enabled!" );
 		}
 
-		//Create window
-		gWindow = SDL_CreateWindow( "Epic Runner", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
+		if( Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0 )
+        {
+            printf( "Unable to open audio: %s\n", Mix_GetError());
+            success=false;
+        }
+
+		//Create window using SINGLETON Design Pattern
+		gWindow = SDL_CreateWindow( "Epic Runner", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screen->getWidth(), screen->getHeight(), SDL_WINDOW_SHOWN );
 		if( gWindow == NULL )
 		{
 			printf( "Window could not be created! SDL Error: %s\n", SDL_GetError() );
@@ -67,20 +82,21 @@ bool Game::init()
 	return success;
 }
 
-bool Game::loadGrid()
+bool Game::loadGrid()       //this is the main game one. This is where all the objects will come and the user can play.
 {
 	//Loading success flag
 	bool success = true;
-	
+	// loading all the pictures
 	Drawing::assets = loadTexture("assets.png");
+	Drawing::exp = loadTexture("exp.png");
 	Drawing::tt = loadTexture("tt.png");
 	Drawing::cactus = loadTexture("cactus.png");
 	Drawing::life = loadTexture("life.png");
-	Drawing::weapon = loadTexture("weapon.png");
 	Drawing::animal = loadTexture("animal.png");
 	Drawing::ghost = loadTexture("ghost.png");
+	Drawing::meteor = loadTexture("meteor.png");
     gTexture = loadTexture("bg.png");
-	if(Drawing::assets==NULL || Drawing::tt==NULL || Drawing::life==NULL|| Drawing::weapon==NULL|| Drawing::cactus==NULL || Drawing::animal==NULL || Drawing::ghost==NULL || gTexture==NULL)
+	if(Drawing::assets==NULL || Drawing::tt==NULL || Drawing::life==NULL|| Drawing::cactus==NULL || Drawing::animal==NULL || Drawing::ghost==NULL || Drawing::meteor==NULL || gTexture==NULL)
     {
         printf("Unable to run due to error: %s\n",SDL_GetError());
         success =false;
@@ -88,11 +104,31 @@ bool Game::loadGrid()
 	return success;
 }
 
-bool Game::loadMedia()
+bool Game::loadMedia()   		//this function is called to display the main menu
 {
 	//Loading success flag
 	bool success = true;
-    gTexture = loadTexture("menu.png");
+	music=Mix_LoadMUS("music.mp3");               //we introduced a song to make the game more lively
+    gTexture = loadTexture("menu.png");					//image of the menu
+	if(gTexture==NULL)
+    {
+        printf("Unable to run due to error: %s\n",SDL_GetError());
+        success =false;
+    }
+	if(music == NULL)
+    {
+        printf( "Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError() );
+        success = false;
+    }
+	Mix_PlayMusic(music,0);
+	return success;
+}
+
+bool Game::loadIns()				//this calls the function which displays the instructuions
+{
+	//Loading success flag
+	bool success = true;
+    gTexture = loadTexture("instructions.png");
 	if(gTexture==NULL)
     {
         printf("Unable to run due to error: %s\n",SDL_GetError());
@@ -101,11 +137,24 @@ bool Game::loadMedia()
 	return success;
 }
 
-bool Game::loadIns()
+bool Game::loadWIN()		//this one is when the person completes the game and wins
 {
 	//Loading success flag
 	bool success = true;
-    gTexture = loadTexture("instructions.png");
+    gTexture = loadTexture("won.png");        //loading winning screen
+	if(gTexture==NULL)
+    {
+        printf("Unable to run due to error: %s\n",SDL_GetError());
+        success =false;
+    }
+	return success;
+}
+
+bool Game::loadLOST()                     //this one is when the person completes the game and loses
+{
+	//Loading success flag
+	bool success = true;
+    gTexture = loadTexture("lost.png");            //loading losing screen
 	if(gTexture==NULL)
     {
         printf("Unable to run due to error: %s\n",SDL_GetError());
@@ -122,8 +171,6 @@ void Game::close()
 	Drawing::assets=NULL;
 	SDL_DestroyTexture(Drawing::tt);
 	Drawing::tt=NULL;
-	SDL_DestroyTexture(Drawing::weapon);
-	Drawing::weapon=NULL;
 	SDL_DestroyTexture(Drawing::cactus);
 	Drawing::cactus=NULL;
 	SDL_DestroyTexture(Drawing::life);
@@ -132,6 +179,10 @@ void Game::close()
 	Drawing::animal=NULL;
 	SDL_DestroyTexture(Drawing::ghost);
 	Drawing::ghost=NULL;
+	SDL_DestroyTexture(Drawing::meteor);
+	Drawing::meteor=NULL;
+	SDL_DestroyTexture(Drawing::exp);
+	Drawing::exp=NULL;
 	SDL_DestroyTexture(gTexture);
 	
 	//Destroy window
@@ -189,49 +240,68 @@ void Game::run( )
 				cout<<quit;
 			}
 
+
 			if(e.type == SDL_MOUSEBUTTONDOWN){
 			//this is a good location to add pigeon in linked list.
 				int xMouse, yMouse;
 				SDL_GetMouseState(&xMouse,&yMouse);
-				if (state == 0 and xMouse>=415 and xMouse<= 575 and yMouse>=245 and yMouse<=295){
+				if (state == 0 and xMouse>=415 and xMouse<= 575 and yMouse>=245 and yMouse<=295){  
+					// this checks whether we are on the main page and whether we clicked the play button
+					// in which case the game would start
 					state = 2;
-					loadGrid();
+					loadGrid();        //loads the gaming screen
+				}
+				else if (state == 4){
+					// this one is for when the game is finished and you choose whether to contimue or end
+					if (xMouse>=425 and xMouse<= 575 and yMouse>=480 and yMouse<=535){
+						quit = true; //game finished --bye bye--
+					}
+					else if(xMouse>=410 and xMouse<= 590 and yMouse>=400 and yMouse<=470){
+						state = 0;
+						runningman.counter = 0;        //state changed to the main menu one
+						loadMedia();			//main menu opened
+					}
 				}
 				else if(state == 0 and xMouse>=360 and xMouse<= 630 and yMouse>=370 and yMouse<=425){
-					state =1;
-					loadIns();
+					state = 1;
+					loadIns();         //the instrutions screen is loaded and state is changed
 				}
 				else if(state == 1 and xMouse>=40 and xMouse<= 145 and yMouse>=35 and yMouse<=85){
 					state = 0;
-					loadMedia();
-				}
-				else if (state ==2)
-				{
-					runningman.createObject(xMouse, yMouse);
+					loadMedia();	//the main screen is loaded and state is changed
 				}
 			}
 			const Uint8* state = SDL_GetKeyboardState(NULL);
 			if (state[SDL_SCANCODE_UP]) { 
-				runningman.checks = true;
+				runningman.checks = true;           //for a certain key, a certain check becomes true
 			}
 			if (state[SDL_SCANCODE_RIGHT]) { 
-				runningman.right = true;
-			}
-			if (state[SDL_SCANCODE_DOWN]) { 
-				runningman.weapon_check = true;
+				runningman.right = true;            //for a certain key, a certain check becomes true
 			}
 			if (state[SDL_SCANCODE_LEFT]) { 
-				runningman.left = true;
-			}
+				runningman.left = true;	           //for a certain key, a certain check becomes true
+			}   
 		}
+		if (runningman.win_check == true){		//this condition checks for whether game is won
+			loadWIN();
+			runningman.emptying();              // empties everything
+			state = 4;
+			runningman.win_check = false;
+			}
+		if (runningman.lost_check == true){     //this condition checks for whether game is lost
+			loadLOST();
+			runningman.emptying();					// empties everything
+			state = 4;
+			runningman.lost_check = false;
+			}
 
 		SDL_RenderClear(Drawing::gRenderer); //removes everything from renderer
 		SDL_RenderCopy(Drawing::gRenderer, gTexture, NULL, NULL);//Draws background to renderer
 		//***********************draw the objects here********************
-		if (state ==2){
-		runningman.drawObjects();}
-		if (state ==2 && runningman.screen ==true){
-		runningman.createObj();}
+
+		if (state ==2){      // these funstions are only called when the user is playing the game
+		runningman.drawObjects();
+		runningman.createObject();}
 
 		//****************************************************************
     	SDL_RenderPresent(Drawing::gRenderer); //displays the updated renderer
