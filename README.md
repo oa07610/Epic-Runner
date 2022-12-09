@@ -1,5 +1,5 @@
 # Epic-Runner
-It is a runner game in which player assumes the character of a young man who must dash through the space while gathering coins and avoiding obstacles by jumping until he collides with them. Following are some rules and workflow of our project:
+It is a runner game developed using C++ and SDL game development library. It is a 2d game in which player assumes the character of a young man who must dash through the space while gathering coins and avoiding obstacles by jumping until he collides with them. Following are some rules and workflow of our project:
 
 •Tasks to do are finding coins and eliminating foes. 
 
@@ -14,4 +14,4 @@ coins.
 
 •	Character has multiples lives which reduce upon colliding with the obstacles.
 
-We have utilized standard OOP practices such as classes, polymorphism, inheritance, operator overloading, function overriding and design patterns. It was a university project for the course OOP Design and Methodologies. 
+We have utilized standard OOP practices such as classes, polymorphism, inheritance, operator overloading, function overriding and design patterns. It was a university project for the course OOP Design and Methodologies.
