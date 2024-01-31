@@ -1,7 +1,7 @@
 # Epic-Runner
-It is a runner game developed using C++ and SDL game development library. It is a 2d game in which player assumes the character of a young man who must dash through the space while gathering coins and avoiding obstacles by jumping until he collides with them. Following are some rules and workflow of our project:
+A single player runner game developed using SDL game development library of C++. The player assumes the character of a young man who must dash through space while gathering coins and avoiding obstacles such as zombies, and beasts, by jumping and stop himself from colliding. Following are some rules and workflow of our project:
 
-•Tasks to do are finding coins and eliminating foes. 
+• Tasks to do are finding coins and eliminating foes. 
 
 •	The objective of the game is to collect 10 coins withing the given range of lives. 
 
